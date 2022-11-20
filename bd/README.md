@@ -1,1 +1,2 @@
-# [DrawSQL diagram](https://drawsql.app/teams/grigoriys-team/diagrams/uchi-doma)
+# DB
+[DrawSQL diagram](https://drawsql.app/teams/grigoriys-team/diagrams/uchi-doma)
