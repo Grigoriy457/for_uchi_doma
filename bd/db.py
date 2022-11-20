@@ -147,5 +147,5 @@ if __name__ == '__main__':
 	# for table_name in db.get_all_tables_name():
 	# 	print(table_name, db.get_all_cols_by_table_name(table_name), db.get_table_data_by_table_name(table_name))
 
-	for i in db.get_restourants_count():
+	for i in db.get_food_by_restourant_id(2):
 		print(i)
