@@ -64,6 +64,7 @@ class Ui(QMainWindow, Ui_MainWindow):
 		print("Applying changes...")
 		for i in self.changes:
 			db.change_item_by_table_name_col_name_id(*i)
+		QtWidgets.QMessageBox.information(self, "Инфо", "Все изменения были сохранены!")
 
 
 def except_hook(cls, exception, traceback):
