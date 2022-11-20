@@ -1,3 +1,2 @@
-# Test
-
-<iframe src="https://drawsql.app/teams/grigoriys-team/diagrams/uchi-doma"></iframe>
+# [DrawSQL diagram](https://drawsql.app/teams/grigoriys-team/diagrams/uchi-doma)
+<a href="https://drawsql.app/teams/grigoriys-team/diagrams/uchi-doma" target="_blank">Test</a>
