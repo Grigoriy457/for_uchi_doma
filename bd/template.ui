@@ -53,6 +53,19 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="cancelCangesButton">
+        <property name="minimumSize">
+         <size>
+          <width>130</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Отменить изменения</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="applyChangesButton">
         <property name="minimumSize">
          <size>

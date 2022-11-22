@@ -20,49 +20,49 @@ class Database:
 				pass
 		self.connection = sqlite3.connect(db_file, check_same_thread=False)
 		self.cursor = self.connection.cursor()
-		with self.connection:
-			self.cursor.execute("""CREATE TABLE IF NOT EXISTS food (
-									    id                INTEGER PRIMARY KEY AUTOINCREMENT,
-									    restourant_id     INTEGER NOT NULL,
-									    food_categorie_id INTEGER NOT NULL,
-									    name              VARCHAR NOT NULL,
-									    price             NUMERIC NOT NULL);""")
-			self.cursor.execute("""CREATE TABLE IF NOT EXISTS food_categories (
-									    id   INTEGER PRIMARY KEY AUTOINCREMENT,
-									    name VARCHAR NOT NULL);""")
-			self.cursor.execute("""CREATE TABLE IF NOT EXISTS food_group (
-									    id       INTEGER PRIMARY KEY AUTOINCREMENT,
-									    order_id INTEGER NOT NULL,
-									    user_id  INTEGER NOT NULL,
-									    food_id  INTEGER NOT NULL,
-									    pieces   INTEGER NOT NULL
-									                     DEFAULT (1));""")
-			self.cursor.execute("""CREATE TABLE IF NOT EXISTS restourants (
-									    id        INTEGER PRIMARY KEY AUTOINCREMENT,
-									    name      VARCHAR NOT NULL,
-									    longitude NUMERIC NOT NULL,
-									    latitude  NUMERIC NOT NULL,
-									    website   VARCHAR NOT NULL);""")
-			self.cursor.execute("""CREATE TABLE IF NOT EXISTS user_basket (
-									    id      INTEGER PRIMARY KEY AUTOINCREMENT,
-									    user_id INTEGER NOT NULL,
-									    food_id INTEGER NOT NULL,
-									    pieces  INTEGER NOT NULL
-									                    DEFAULT (1));""")
-			self.cursor.execute("""CREATE TABLE IF NOT EXISTS user_order (
-									    id             INTEGER  PRIMARY KEY AUTOINCREMENT,
-									    order_datetime DATETIME NOT NULL,
-									    user_id        INTEGER  NOT NULL,
-									    restourant_id  INTEGER  NOT NULL,
-									    longitude      NUMERIC  NOT NULL,
-									    latitude       NUMERIC  NOT NULL);""")
-			self.cursor.execute("""CREATE TABLE IF NOT EXISTS users (
-									    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-									    first_name VARCHAR NOT NULL,
-									    last_name  VARCHAR NOT NULL,
-									    birthday   DATE,
-									    phone      VARCHAR NOT NULL,
-									    email      VARCHAR);""")
+		# with self.connection:
+		# 	self.cursor.execute("""CREATE TABLE IF NOT EXISTS food (
+		# 							    id                INTEGER PRIMARY KEY AUTOINCREMENT,
+		# 							    restourant_id     INTEGER NOT NULL,
+		# 							    food_categorie_id INTEGER NOT NULL,
+		# 							    name              VARCHAR NOT NULL,
+		# 							    price             NUMERIC NOT NULL);""")
+		# 	self.cursor.execute("""CREATE TABLE IF NOT EXISTS food_categories (
+		# 							    id   INTEGER PRIMARY KEY AUTOINCREMENT,
+		# 							    name VARCHAR NOT NULL);""")
+		# 	self.cursor.execute("""CREATE TABLE IF NOT EXISTS food_group (
+		# 							    id       INTEGER PRIMARY KEY AUTOINCREMENT,
+		# 							    order_id INTEGER NOT NULL,
+		# 							    user_id  INTEGER NOT NULL,
+		# 							    food_id  INTEGER NOT NULL,
+		# 							    pieces   INTEGER NOT NULL
+		# 							                     DEFAULT (1));""")
+		# 	self.cursor.execute("""CREATE TABLE IF NOT EXISTS restourants (
+		# 							    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+		# 							    name      VARCHAR NOT NULL,
+		# 							    longitude NUMERIC NOT NULL,
+		# 							    latitude  NUMERIC NOT NULL,
+		# 							    website   VARCHAR NOT NULL);""")
+		# 	self.cursor.execute("""CREATE TABLE IF NOT EXISTS user_basket (
+		# 							    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+		# 							    user_id INTEGER NOT NULL,
+		# 							    food_id INTEGER NOT NULL,
+		# 							    pieces  INTEGER NOT NULL
+		# 							                    DEFAULT (1));""")
+		# 	self.cursor.execute("""CREATE TABLE IF NOT EXISTS user_order (
+		# 							    id             INTEGER  PRIMARY KEY AUTOINCREMENT,
+		# 							    order_datetime DATETIME NOT NULL,
+		# 							    user_id        INTEGER  NOT NULL,
+		# 							    restourant_id  INTEGER  NOT NULL,
+		# 							    longitude      NUMERIC  NOT NULL,
+		# 							    latitude       NUMERIC  NOT NULL);""")
+		# 	self.cursor.execute("""CREATE TABLE IF NOT EXISTS users (
+		# 							    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+		# 							    first_name VARCHAR NOT NULL,
+		# 							    last_name  VARCHAR NOT NULL,
+		# 							    birthday   DATE,
+		# 							    phone      VARCHAR NOT NULL,
+		# 							    email      VARCHAR);""")
 
 	def get_all_tables_name(self):
 		"""
@@ -91,6 +91,16 @@ class Database:
 		"""
 		with self.connection:
 			self.cursor.execute("""UPDATE "{}" SET "{}" = ? WHERE "id" = ?;""".format(table_name, col_name), (value, _id,))
+
+	def get_value_by_table_name_col_name_id(self, table_name, col_name, _id):
+		"""
+		Получение значение ячейки по названию таблицы, названию столбца и id
+		"""
+		with self.connection:
+			ret = self.cursor.execute("""SELECT "{}" FROM "{}" WHERE "id" = ?;""".format(col_name, table_name), (_id,)).fetchone()
+			if ret is not None:
+				return ret[0]
+			return None
 
 	def get_food_by_restourant_id(self, restourant_id):
 		with self.connection:
