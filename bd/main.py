@@ -1,4 +1,5 @@
 import sys
+import traceback
 
 from PyQt5 import Qt
 from PyQt5 import uic, QtGui, QtCore, QtWidgets
@@ -56,15 +57,32 @@ class Ui(QMainWindow, Ui_MainWindow):
 		tableWidget = self.sender()
 		table_name = tableWidget.objectName().split("__")[1]
 		table_item = tableWidget.item(row, column).text()
-		self.changes.append([table_name, db.get_all_cols_by_table_name(table_name)[column], tableWidget.item(row, 0).text(), table_item])
+		if table_item == "None":
+			table_item = None
+
+		changes = list()
+		_id = tableWidget.item(row, 0).text()
+		for i in self.changes:
+			if not(i[0] == table_name and i[2] == _id):
+				changes.append(i)
+		self.changes = changes
+		self.changes.append([table_name, db.get_all_cols_by_table_name(table_name)[column], _id, table_item])
 		print(f"New changes in {table_name}: {table_item}")
-		# print(dir(tableWidget))
 
 	def applyChanges(self):
 		print("Applying changes...")
+		is_ok = True
 		for i in self.changes:
-			db.change_item_by_table_name_col_name_id(*i)
-		QtWidgets.QMessageBox.information(self, "Инфо", "Все изменения были сохранены!")
+			try:
+				db.change_item_by_table_name_col_name_id(*i)
+			except Exception as e:
+				if not is_ok:
+					continue
+				print(i)
+				QtWidgets.QMessageBox.critical(self, "Ошибка при записи в бд", f"Ошибка в таблице '{i[0]}', в строчке {i[2]}, в столбце '{i[2]}'\n\n{traceback.format_exc()}")
+				is_ok = False
+		if is_ok:
+			QtWidgets.QMessageBox.information(self, "Инфо", "Все изменения были сохранены!")
 
 
 def except_hook(cls, exception, traceback):
