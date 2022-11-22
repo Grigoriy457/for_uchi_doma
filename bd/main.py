@@ -112,7 +112,7 @@ class Ui(QMainWindow, Ui_MainWindow):
 				self.color_table(widget, is_changed=False, cords=i[4])
 			except Exception as e:
 				self.tabWidget.setCurrentIndex(db.get_all_tables_name().index(i[0]))
-				QtWidgets.QMessageBox.critical(self, "Ошибка при записи в бд", f"Ошибка в таблице '{i[0]}', в строчке {i[2]}, в столбце '{i[3]}'\n\n{traceback.format_exc()}")
+				QtWidgets.QMessageBox.critical(self, "Ошибка при записи в бд", f"Ошибка в таблице '{i[0]}', в строчке {i[2]}, в столбце '{i[2]}'\n\n{traceback.format_exc()}")
 				break
 		else:
 			self.applyChangesButton.setEnabled(False)
